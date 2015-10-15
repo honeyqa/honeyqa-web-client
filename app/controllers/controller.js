@@ -2,21 +2,7 @@
  * Created by NE_LEADER on 2015. 10. 5..
  */
 
-
-//var http = require('http');
-
-//
-//http.get("http://api2.honeyqa.io/appruncount/weekly/4", function(res) {
-//    console.log("Received response: " + res.statusCode);
-//    res.on('data', function(chunk){
-//        console.log('BODY: '+chunk);
-//    });
-//}).on('error', function(e) {
-//    console.log("Got error: " + e.message);
-//});
-
-
-function mainCtrl($scope, $http) {
+function mainCtrl($scope) {
     //$('#page-wrapper').removeClass('nav-small');
 }
 
@@ -31,32 +17,18 @@ function weeklyErrorCtrl($scope, $http) {
     /*
         http request
      */
-    var obj;
-
     $http({
         method: 'GET',
-        url: 'api2.honeyqa.io/appruncount/weekly/4'
+        url: 'http://api2.honeyqa.io/appruncount/weekly/4'
     }).then(function successCallback(response) {
-        alert(response.data);
-    }, function errorCallback(response) {
-        // called asynchronously if an error occurs
-        // or server returns response with an error status.
-        alert(response);
-    });
+        obj = JSON.parse(JSON.stringify(response.data));
+        console.log(obj[0].date);
 
-    //$http.get('http://api2.honeyqa.io/appruncount/weekly/4').success(
-    //    function(data)
-    //    {
-    //        alert(data);
-    //    });
-    /*
-        http request end
-     */
-
-    $(function	()	{
         //Flot Chart
         //Website traffic chart
-        var init = { data: [[0, 300], [1, 8], [2, 5], [3, 8], [4, 7], [5,9], [6, 8], [7, 8]],
+        var init = {
+                data: [[ 0, obj[0].error_count], [ 1, obj[1].error_count], [ 2, obj[2].error_count], [3, obj[3].error_count],
+                            [4, obj[4].error_count], [5,obj[5].error_count], [6, obj[6].error_count], [7, obj[7].error_count]],
                 label: "Visitor"
             },
             options = {
@@ -100,11 +72,11 @@ function weeklyErrorCtrl($scope, $http) {
                 }
             });
         }
-
         animate();
 
+    }, function errorCallback(response) {
+        console.log('error :' + response);
     });
-
 }
 
 function easyChartCtrl($scope) {

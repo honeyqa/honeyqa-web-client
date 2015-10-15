@@ -12,11 +12,23 @@ function emailCtrl($scope) {
     }
 }
 
-function weeklyErrorCtrl($scope) {
-    $(function	()	{
+function weeklyErrorCtrl($scope, $http) {
+
+    /*
+        http request
+     */
+    $http({
+        method: 'GET',
+        url: 'http://api2.honeyqa.io/appruncount/weekly/4'
+    }).then(function successCallback(response) {
+        obj = JSON.parse(JSON.stringify(response.data));
+        console.log(obj[0].date);
+
         //Flot Chart
         //Website traffic chart
-        var init = { data: [[0, 5], [1, 8], [2, 5], [3, 8], [4, 7], [5,9], [6, 8], [7, 8], [8, 10], [9, 12], [10, 10]],
+        var init = {
+                data: [[ 0, obj[0].error_count], [ 1, obj[1].error_count], [ 2, obj[2].error_count], [3, obj[3].error_count],
+                            [4, obj[4].error_count], [5,obj[5].error_count], [6, obj[6].error_count], [7, obj[7].error_count]],
                 label: "Visitor"
             },
             options = {
@@ -60,11 +72,11 @@ function weeklyErrorCtrl($scope) {
                 }
             });
         }
-
         animate();
 
+    }, function errorCallback(response) {
+        console.log('error :' + response);
     });
-
 }
 
 function easyChartCtrl($scope) {

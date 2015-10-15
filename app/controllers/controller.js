@@ -2,7 +2,21 @@
  * Created by NE_LEADER on 2015. 10. 5..
  */
 
-function mainCtrl($scope) {
+
+//var http = require('http');
+
+//
+//http.get("http://api2.honeyqa.io/appruncount/weekly/4", function(res) {
+//    console.log("Received response: " + res.statusCode);
+//    res.on('data', function(chunk){
+//        console.log('BODY: '+chunk);
+//    });
+//}).on('error', function(e) {
+//    console.log("Got error: " + e.message);
+//});
+
+
+function mainCtrl($scope, $http) {
     //$('#page-wrapper').removeClass('nav-small');
 }
 
@@ -12,11 +26,37 @@ function emailCtrl($scope) {
     }
 }
 
-function weeklyErrorCtrl($scope) {
+function weeklyErrorCtrl($scope, $http) {
+
+    /*
+        http request
+     */
+    var obj;
+
+    $http({
+        method: 'GET',
+        url: 'api2.honeyqa.io/appruncount/weekly/4'
+    }).then(function successCallback(response) {
+        alert(response.data);
+    }, function errorCallback(response) {
+        // called asynchronously if an error occurs
+        // or server returns response with an error status.
+        alert(response);
+    });
+
+    //$http.get('http://api2.honeyqa.io/appruncount/weekly/4').success(
+    //    function(data)
+    //    {
+    //        alert(data);
+    //    });
+    /*
+        http request end
+     */
+
     $(function	()	{
         //Flot Chart
         //Website traffic chart
-        var init = { data: [[0, 5], [1, 8], [2, 5], [3, 8], [4, 7], [5,9], [6, 8], [7, 8], [8, 10], [9, 12], [10, 10]],
+        var init = { data: [[0, 300], [1, 8], [2, 5], [3, 8], [4, 7], [5,9], [6, 8], [7, 8]],
                 label: "Visitor"
             },
             options = {
